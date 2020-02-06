@@ -27,7 +27,7 @@ class Book
     /**
      * @return int
      */
-    public function getRating(): int
+    public function getRating(): ?int
     {
         return $this->rating;
     }
@@ -75,7 +75,7 @@ class Book
     /**
      * @return string
      */
-    public function getSummary(): string
+    public function getSummary(): ?string
     {
         return $this->summary;
     }

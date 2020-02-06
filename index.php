@@ -1,12 +1,15 @@
 <?php
 
 require_once __DIR__ . '/config/bootstrap.php';
+$bookManager = $container->getBookManager();
 
-$books = $container->getBookManager()->findAll();
 
-if (isset($_GET['book_id']) && isset($_GET['value']) ) {
-    echo "changement de note";
+if (isset($_GET['book_id']) && isset($_GET['value'])) {
+    $book = $bookManager->findOneById($_GET['book_id']);
+    $book->setRating($_GET['value']);
+    $bookManager->update($book);
 }
+$books = $bookManager->findAll();
 
 
 ?>
@@ -30,18 +33,29 @@ if (isset($_GET['book_id']) && isset($_GET['value']) ) {
         <h1>HB Library</h1>
         <div class="row">
 
-            <?php foreach ($books as $book) :?>
+            <?php foreach ($books as $book) :
+
+            ?>
                 <div class="col-4">
                     <div class="card mt-2">
-                        <div class="card-header"><?= $book->getTitle() ?> <small>écrit par <?= $book->getAuthor() ?></small></div>
+                        <div class="card-header">
+                            <a href="template/books/show.php?id=<?= $book->getId() ?>">
+                                <?= $book->getTitle() ?>
+                            </a>
+                            <small>écrit par
+
+                                <a href="template/books/search.php?value=<?= $book->getAuthor() ?>&field=author">
+                                    <?= $book->getAuthor() ?>
+                                </a>
+                            </small></div>
                         <div class="card-body"></div>
                         <div class="card-footer">
                             <div class="pull-right">
-                                <a href="index.php?book_id=<?= $book->getId() ?>&value=1"><i class="fa fa-star-o"></i></a>
-                                <a href="index.php?book_id=<?= $book->getId() ?>&value=2"><i class="fa fa-star-o"></i></a>
-                                <a href="index.php?book_id=<?= $book->getId() ?>&value=3"><i class="fa fa-star-o"></i></a>
-                                <a href="index.php?book_id=<?= $book->getId() ?>&value=4"><i class="fa fa-star-o"></i></a>
-                                <a href="index.php?book_id=<?= $book->getId() ?>&value=5"><i class="fa fa-star-o"></i></a>
+                                <?php for ($i = 1; $i < 6; $i++) : ?>
+                                    <a href="index.php?book_id=<?= $book->getId() ?>&value=<?= $i ?>">
+                                        <i class="fa fa-star<?= $book->getRating() >= $i ? '' : '-o' ?>"></i>
+                                    </a>
+                                <?php endfor; ?>
                             </div>
                         </div>
                     </div>
