@@ -5,7 +5,7 @@ require_once __DIR__ . '/config/bootstrap.php';
 $books = $container->getBookManager()->findAll();
 
 if (isset($_GET['book_id']) && isset($_GET['value']) ) {
-    echo "changmeent de note";
+    echo "changement de note";
 }
 
 
